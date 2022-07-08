@@ -1,6 +1,7 @@
 package com.cognixia.jump.controller;
 
 import java.util.List;
+import com.cognixia.jump.NoAdminsException.NoAdminsException;
 import java.util.Optional;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -17,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cognixia.jump.NoAdminsException.NoAdminsException;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.UserRepository;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "User", description = "the API for managing users")
 public class UserController {
 	
 	@Autowired
@@ -51,10 +56,19 @@ public class UserController {
 	
 //	@DeleteMapping("/user/{id}")  
 //	public Optional<User> deleteUser(@PathVariable Integer id)  { 
-//		
-//	
-//	
-//
 //}
+	
+	@GetMapping("/all/admins")
+	public List<User> getAllAdmins () throws NoAdminsException {
+		return repo.findAdmins();
+		
+	}
+	
+	@GetMapping("/user/{id}")
+	public Optional<User> findUserById (@RequestBody int id) {
+		return repo.findById(id);
+	}
+	
+	
 	
 }

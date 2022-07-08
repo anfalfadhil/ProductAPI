@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cognixia.jump.model.User;
 
-// class used by security to hold all the necessary user details/information needed to do authentication & authorization
+
+
 public class MyUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +32,8 @@ public class MyUserDetails implements UserDetails {
 		this.user = user;
 	}
 
+
+	
 
 
 

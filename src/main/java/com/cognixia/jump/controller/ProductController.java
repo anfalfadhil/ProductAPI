@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cognixia.jump.model.Product;
 import com.cognixia.jump.repository.ProductRepository;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RequestMapping("/api")
 @RestController
+@Tag(name = "product", description = "the API for managing products")
 public class ProductController {
 	
 	@Autowired

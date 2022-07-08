@@ -20,8 +20,11 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.MyUserDetails;
 import com.cognixia.jump.util.JwtUtil;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Auth", description = "the API for managing Authentications")
 public class AuthController {
 
 	@Autowired
@@ -40,25 +43,7 @@ public class AuthController {
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-//		try {
-//			Authentication authenticate = authenticationManager
-//											.authenticate(
-//											new UsernamePasswordAuthenticationToken(
-//													request.getUsername(), request.getPassword()
-//													)
-//												);
-//			
-//			User user = (User) authenticate.getPrincipal();
-//			//user.setPassword(null);
-//			return ResponseEntity.ok()
-//						.header(
-//								HttpHeaders.AUTHORIZATION,
-//								jwtUtil.generateToken(userDetails)
-//								)
-//								.body(user);
-//			} catch (BadCredentialsException ex) {
-//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//			}
+
 
 		String jwt = jwtUtil.generateToken(userDetails);
 
