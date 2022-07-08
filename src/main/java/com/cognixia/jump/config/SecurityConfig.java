@@ -54,26 +54,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		 http.csrf().disable()
 		 .authorizeRequests()
+		 .antMatchers( "/v3/api-docs").permitAll()
+		 .antMatchers( "/swagger-ui/index.html").permitAll()
+		 .antMatchers( "/openapi.html").permitAll()
 		 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 		 .antMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 		 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
 		 .antMatchers(HttpMethod.POST, "/api/product").permitAll()
-		 .antMatchers( "/v3/api-docs").permitAll()
-		 .antMatchers( "/swagger-ui/index.html").permitAll()
-		 .antMatchers( "/openapi.html").permitAll()
 		 .antMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN")
 		 .antMatchers(HttpMethod.GET, "/api/user/{id}").permitAll()
+		 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").permitAll()
+		 .antMatchers(HttpMethod.PATCH, "/api/user/{id}").permitAll()
 		 .antMatchers(HttpMethod.GET, "/api/all/admins").hasRole("ADMIN")
 		 .antMatchers(HttpMethod.GET, "/api/product").permitAll()
 		 .antMatchers("/api/admin").hasRole("ADMIN")
 		 .anyRequest().authenticated().and()
 		 .sessionManagement()
 		 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//		 			.exceptionHandling()
-//					.authenticationEntryPoint((request, response, ex) -> {
-//						response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-//					}).and()
-		 			
+
 			
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		
