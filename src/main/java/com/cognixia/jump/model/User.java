@@ -10,10 +10,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -76,8 +79,12 @@ public class User implements Serializable {
 	@Column(columnDefinition = "boolean default true")
 	private boolean enabled; 
 	
-//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//	private List<Orders> orders;
+
+	@OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "user")
+    @JoinColumn(name = "cart", nullable = false)
+    private Cart cart;
 	
 	
 	public User () {
@@ -86,19 +93,20 @@ public class User implements Serializable {
 	
 	
 	
-	
+
 	public User(Integer id, String username,
-		@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "The pin must be a 4 digit number") String email,
-		String password, Role role, List<Product> my_list, boolean enabled) {
-	super();
-	this.id = id;
-	this.username = username;
-	this.email = email;
-	this.password = password;
-	this.role = role;
-	this.my_list = my_list;
-	this.enabled = enabled;
-}
+			@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "The pin must be a 4 digit number") String email,
+			String password, Role role, List<Product> my_list, boolean enabled, Cart cart) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.my_list = my_list;
+		this.enabled = enabled;
+		this.cart = cart;
+	}
 
 
 
@@ -107,87 +115,123 @@ public class User implements Serializable {
 		return id;
 	}
 
+
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	
-	
-	
+
+
 
 	public String getUsername() {
 		return username;
 	}
 
+
+
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	
-	
+
+
+
 	public String getEmail() {
 		return email;
 	}
 
+
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
+
+
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String passWord) {
-		this.password = passWord;
-	}
-	
-	
 
-	public List<Product> getMy_list() {
-		return my_list;
+
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setMy_list(List<Product> my_list) {
-		this.my_list = my_list;
-	}
-	
-	
 
-//	public List<Orders> getOrders() {
-//		return orders;
-//	}
-//
-//	public void setOrders(List<Orders> orders) {
-//		this.orders = orders;
-//	}
 
-//	@Override
-//	public Collection<? extends GrantedAuthority> getAuthorities() {
-//		List<GrantedAuthority> roles = new ArrayList<>();
-//		roles.add(new Authority("ROLE_USER"));
-//		return roles;
-//	}
 
-	
 	public Role getRole() {
 		return role;
 	}
+
+
+
 
 	public void setRole(Role role) {
 		this.role = role;
 	}
 
+
+
+
+	public List<Product> getMy_list() {
+		return my_list;
+	}
+
+
+
+
+	public void setMy_list(List<Product> my_list) {
+		this.my_list = my_list;
+	}
+
+
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+
+
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", role="
-				 + ", my_list=" + my_list + ", enabled=" + enabled + "]";
+
+
+
+	public Cart getCart() {
+		return cart;
 	}
+
+
+
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+
+
+
 
 
 	

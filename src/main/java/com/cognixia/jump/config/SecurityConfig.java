@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 .antMatchers(HttpMethod.GET, "/api/product").permitAll()
 		 .antMatchers(HttpMethod.DELETE, "/api/product/{id}").hasRole("ADMIN")
 		 .antMatchers(HttpMethod.PATCH, "/api/product/{id}").hasRole("ADMIN")
+		 .antMatchers(HttpMethod.POST, "/api/cart").permitAll() 
 		 .antMatchers("/api/admin").hasRole("ADMIN")
 		 .anyRequest().authenticated().and()
 		 .sessionManagement()

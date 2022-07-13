@@ -4,11 +4,15 @@ import java.util.List;
 import com.cognixia.jump.model.Product;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Product {
@@ -16,37 +20,108 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
+
 	@Column(nullable = false)
 	private double price;
 	
-	@Column(nullable = true, length = 64)
+	private String description;
+
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
 	private String image;
-	
-	
+
 	@ManyToOne
-	@JoinColumn( name = "user_id", referencedColumnName = "id" )
+	@JoinColumn(name = "user", referencedColumnName = "id")
 	private User user;
-	
-	
-//	@ManyToOne()
-//	@JoinColumn( name = "orders", referencedColumnName = "id" )
-//	private List<Orders> orders;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "cart", nullable = true)
+	private Cart cart;
+
 	public Product() {
-		
+
 	}
 
-	public Product(Integer id, String name, double price, String image) {
+
+
+
+
+
+
+
+	
+
+
+
+
+
+	public Product(Integer id, String name, double price, String description, String image, User user, Cart cart) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
-		//this.qty = qty;
+		this.description = description;
 		this.image = image;
+		this.user = user;
+		this.cart = cart;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 	public Integer getId() {
@@ -73,24 +148,6 @@ public class Product {
 		this.price = price;
 	}
 
-
-	
-//	public List<Orders> getOrders() {
-//		return orders;
-//	}
-//
-//	public void setOrders(List<Orders> orders) {
-//		this.orders = orders;
-//	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -98,16 +155,19 @@ public class Product {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
 
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image name= " + image + "]";
+
+
+	public String getDescription() {
+		return description;
 	}
 
 
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	
 	
-	
+
 }

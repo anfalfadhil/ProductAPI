@@ -1,5 +1,6 @@
 package com.cognixia.jump.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cognixia.jump.GlobalExceptionHandler.UserNotFoundException;
 import com.cognixia.jump.model.Product;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.ProductRepository;
+import com.cognixia.jump.service.ProductService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -30,20 +34,43 @@ public class ProductController {
 	@Autowired
 	ProductRepository repo;
 	
+	@Autowired
+	private ProductService service;
+	
 	@GetMapping("/product")
 	public List<Product> getProducts() {
 		return repo.findAll();
 	}
 	
+//	@PostMapping("/product")
+//	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+//		
+//		product.setId(-1);
+//		
+//		Product created = repo.save(product);
+//		
+//		return ResponseEntity.status(201).body(created);
+//	}
+	
+	
+	
+	
 	@PostMapping("/product")
-	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+	public ResponseEntity<Product> createProduct(@RequestParam("file") MultipartFile file,
+												@RequestParam("name") String name,
+												@RequestParam("price") int price ,
+												@RequestParam("description") String description
+												) throws IOException {
 		
-		product.setId(-1);
 		
-		Product created = repo.save(product);
 		
-		return ResponseEntity.status(201).body(created);
+		Product newProduct = service.createProduct(file, name, description, price);
+		
+		return ResponseEntity.status(201).body(newProduct);
 	}
+	
+	
+	
 	
 	@GetMapping("/product/{id}")
 	public Optional<Product> getAllProducts(@PathVariable Integer id) throws UserNotFoundException {
